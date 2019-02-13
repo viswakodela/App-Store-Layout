@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class SearchResultsCell: UICollectionViewCell {
     
@@ -16,12 +17,40 @@ class SearchResultsCell: UICollectionViewCell {
         setupLayout()
     }
     
+    var appResult: Result! {
+        didSet {
+            guard let url = URL(string: appResult.artworkUrl100) else {return}
+            self.appIconImageView.sd_setImage(with: url)
+            self.nameLabel.text = appResult.trackName
+            self.categoryLabel.text = appResult.primaryGenreName
+            
+            guard let screenShotUrls = appResult.screenshotUrls else {return}
+            if let url = URL(string: screenShotUrls[0]) {
+                self.screenShot1ImageView.sd_setImage(with: url)
+            }
+            
+            if screenShotUrls.count > 1 {
+                if let url = URL(string: screenShotUrls[1]) {
+                    self.screenShot2ImageView.sd_setImage(with: url)
+                }
+            }
+            
+            if screenShotUrls.count > 2 {
+                if let url = URL(string: screenShotUrls[2]) {
+                    self.screenShot3ImageView.sd_setImage(with: url)
+                }
+            }
+        }
+    }
+    
+    
     //MARK: - Layout Components
     let appIconImageView: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.backgroundColor = .red
         iv.layer.cornerRadius = 12
+        iv.clipsToBounds = true
         iv.widthAnchor.constraint(equalToConstant: 64).isActive = true
         iv.heightAnchor.constraint(equalToConstant: 64).isActive = true
         return iv
@@ -64,13 +93,18 @@ class SearchResultsCell: UICollectionViewCell {
     
     lazy var screenShot1ImageView = self.createScreenShotImageView()
     lazy var screenShot2ImageView = self.createScreenShotImageView()
-    lazy var screenSgot3ImageView = self.createScreenShotImageView()
+    lazy var screenShot3ImageView = self.createScreenShotImageView()
     
     //MARK: - Methods
     func createScreenShotImageView() -> UIImageView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .blue
+        imageView.backgroundColor = .clear
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 5
+        imageView.layer.borderWidth = 0.5
+        imageView.layer.borderColor = UIColor(white: 0.5, alpha: 0.5).cgColor
         return imageView
     }
     
@@ -85,9 +119,10 @@ class SearchResultsCell: UICollectionViewCell {
         infoTopStackView.translatesAutoresizingMaskIntoConstraints = false
         infoTopStackView.axis = .horizontal
         infoTopStackView.spacing = 12
+//        infoTopStackView.heightAnchor.constraint(equalToConstant: 64).isActive = true
         infoTopStackView.alignment = .center
         
-        let screenShotsStackView = UIStackView(arrangedSubviews: [screenShot1ImageView, screenShot2ImageView, screenSgot3ImageView])
+        let screenShotsStackView = UIStackView(arrangedSubviews: [screenShot1ImageView, screenShot2ImageView, screenShot3ImageView])
         screenShotsStackView.translatesAutoresizingMaskIntoConstraints = false
         screenShotsStackView.axis = .horizontal
         screenShotsStackView.spacing = 12
