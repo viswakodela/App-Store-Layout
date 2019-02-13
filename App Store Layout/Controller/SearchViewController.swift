@@ -14,11 +14,13 @@ class SearchViewController: UIViewController {
     private static let searchCellID = "SearchCellID"
     
     var appResults: [Result]?
+    var timer: Timer?
     
+    //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
-        fetchItunesApps()
+        setupSearchBar()
     }
     
     //MARK: - Layout Properties
@@ -29,7 +31,32 @@ class SearchViewController: UIViewController {
         collectionView.alwaysBounceVertical = true
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.prefetchDataSource = self
         return collectionView
+    }()
+    
+    lazy var searchController: UISearchController = {
+        let sc = UISearchController(searchResultsController: nil)
+        sc.searchBar.delegate = self
+        return sc
+    }()
+    
+    let activityIndicator: UIActivityIndicatorView = {
+        let activity = UIActivityIndicatorView(style: .white)
+        activity.translatesAutoresizingMaskIntoConstraints = false
+        activity.color = .gray
+        activity.hidesWhenStopped = true
+        return activity
+    }()
+    
+    let enterSearchTermLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Please enter search term above"
+        label.textColor = .lightGray
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        return label
     }()
     
     //MARK: - Methods
@@ -42,20 +69,21 @@ class SearchViewController: UIViewController {
         collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        view.addSubview(activityIndicator)
+        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        collectionView.addSubview(enterSearchTermLabel)
+        enterSearchTermLabel.topAnchor.constraint(equalTo: collectionView.topAnchor, constant: 100).isActive = true
+        enterSearchTermLabel.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor, constant: 50).isActive = true
+        enterSearchTermLabel.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor, constant: -50).isActive = true
+        enterSearchTermLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
     
-    func fetchItunesApps() {
-        APIService.shared.fetchApps { (results, err) in
-            
-            if let error = err {
-                print(error.localizedDescription)
-            }
-            self.appResults = results
-            
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
-        }
+    func setupSearchBar() {
+        navigationItem.searchController = self.searchController
+        navigationItem.searchController?.dimsBackgroundDuringPresentation = false
     }
 }
 
@@ -64,6 +92,8 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let apps = appResults else {return 0}
+        self.activityIndicator.alpha = apps.count != 0 ? 0 : 1
+        self.enterSearchTermLabel.isHidden = apps.count != 0 ? true : false
         return apps.count
     }
     
@@ -80,5 +110,33 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 300)
+    }
+}
+
+extension SearchViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        activityIndicator.startAnimating()
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
+            self.activityIndicator.stopAnimating()
+            DispatchQueue.global(qos: .background).async {
+                APIService.shared.fetchApps(searchTerm: searchText) { (results, err) in
+                    if let error = err {
+                        print(error.localizedDescription)
+                    }
+                    self.appResults = results
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+                    }
+                }
+            }
+        })
+    }
+}
+
+extension SearchViewController: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        print(indexPaths.count)
     }
 }

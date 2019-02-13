@@ -48,7 +48,6 @@ class SearchResultsCell: UICollectionViewCell {
     let appIconImageView: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.backgroundColor = .red
         iv.layer.cornerRadius = 12
         iv.clipsToBounds = true
         iv.widthAnchor.constraint(equalToConstant: 64).isActive = true
