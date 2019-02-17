@@ -1,5 +1,5 @@
-//
-//  ViewController.swift
+ //
+//  TodayController.swift
 //  App Store Layout
 //
 //  Created by Viswa Kodela on 2/9/19.
@@ -8,13 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+ class TodayController: UICollectionViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        collectionView.backgroundColor = .white
     }
-
-
-}
-
+ }
