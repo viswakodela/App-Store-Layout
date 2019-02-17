@@ -35,7 +35,25 @@ class APIService {
                 completion([], error)
             }
             }.resume()
+    }
+    
+    func fetchGames(completion: @escaping (AppGroup?, Error?) -> ()) {
+        guard let url = URL(string:"https://rss.itunes.apple.com/api/v1/us/ios-apps/top-grossing/all/10/explicit.json") else {return}
+        
+        URLSession.shared.dataTask(with: url) { (data, response, err) in
+            if let error = err {
+                print(error.localizedDescription)
+                completion(nil, error)
+                return
+            }
+            guard let data = data else {return}
+            let appGroup = try? JSONDecoder().decode(AppGroup.self, from: data)
+            completion(appGroup, nil)
+            
+            
+        }.resume()
         
     }
+    
     
 }

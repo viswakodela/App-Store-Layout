@@ -14,7 +14,10 @@ class AppGroupsCell: UICollectionViewCell {
         setupLayout()
     }
     
-    let label: UILabel = {
+    let horizontalCollectionView = HorizontalCollectionView(collectionViewLayout: UICollectionViewFlowLayout())
+    
+    //MARK:- Layout Properties
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "App Section"
@@ -23,19 +26,18 @@ class AppGroupsCell: UICollectionViewCell {
         return label
     }()
     
-    let horizontalCollectionView = HorizontalCollectionView(collectionViewLayout: UICollectionViewFlowLayout())
-    
+    //MARK:- Methods
     func setupLayout() {
-        addSubview(label)
-        label.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
-        label.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        label.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        addSubview(titleLabel)
+        titleLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         guard let horizontalView = horizontalCollectionView.view else {return}
         horizontalView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(horizontalView)
-        horizontalView.topAnchor.constraint(equalTo: self.label.bottomAnchor).isActive = true
+        horizontalView.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor).isActive = true
         horizontalView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         horizontalView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         horizontalView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true

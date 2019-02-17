@@ -10,13 +10,25 @@ import UIKit
 
 class HorizontalCollectionView: UICollectionViewController {
     
+    //MARK: - Variables and Constants
     private static let horizontalCellId = "horizontalCellId"
+    var feedResults = [FeedResult]()
     
+    var appGroup: AppGroup? {
+        didSet {
+            guard let appGroup = self.appGroup else {return}
+            self.feedResults = appGroup.feed.results
+            self.collectionView.reloadData()
+        }
+    }
+    
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
     }
     
+    //MARK:- Methods
     func setupLayout() {
         collectionView.backgroundColor = .white
         
@@ -28,14 +40,16 @@ class HorizontalCollectionView: UICollectionViewController {
     }
 }
 
+//MARK:- CollectionView Methods
 extension HorizontalCollectionView: UICollectionViewDelegateFlowLayout {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return feedResults.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HorizontalCollectionView.horizontalCellId, for: indexPath) as! AppsRowCell
+        cell.appResults = self.feedResults[indexPath.item]
         return cell
     }
     
@@ -45,7 +59,6 @@ extension HorizontalCollectionView: UICollectionViewDelegateFlowLayout {
         let height = (view.frame.height - topBottom - leftRight) / 3
         return CGSize(width: (view.frame.width - 48), height: height)
     }
-
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 10

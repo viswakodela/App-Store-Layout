@@ -15,6 +15,7 @@ class AppsHeaderCell: UICollectionViewCell {
         setupLayout()
     }
     
+    //MARK:- Layout Properties
     let companyLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -43,6 +44,7 @@ class AppsHeaderCell: UICollectionViewCell {
         return iv
     }()
     
+    //MARK:- Methods
     fileprivate func setupLayout() {
         
         let stackView = UIStackView(arrangedSubviews: [companyLabel, titleLable, imageView])
@@ -57,7 +59,6 @@ class AppsHeaderCell: UICollectionViewCell {
         stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
         
     }
-    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

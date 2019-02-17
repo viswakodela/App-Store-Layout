@@ -16,6 +16,17 @@ class AppsRowCell: UICollectionViewCell {
         setupLayout()
     }
     
+    var appResults: FeedResult? {
+        didSet {
+            guard let result = appResults else {return}
+            guard let url = URL(string: result.artworkUrl100) else {return}
+            self.imageView.sd_setImage(with: url)
+            self.appNameLabel.text = result.name
+            self.categoryLabel.text = result.artistName
+        }
+    }
+    
+    //MARK:- Layout Properties
     let imageView: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
@@ -54,6 +65,7 @@ class AppsRowCell: UICollectionViewCell {
         return button
     }()
     
+    //MARK:-  Methods
     func setupLayout() {
         
         imageView.widthAnchor.constraint(equalToConstant: 64).isActive = true

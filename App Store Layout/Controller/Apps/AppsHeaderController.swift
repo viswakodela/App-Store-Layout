@@ -10,13 +10,16 @@ import UIKit
 
 class AppsHeaderController: UICollectionViewController {
     
+    //MARK:- Cell IDentifiers
     private static let horizontalHeaderId = "horizontalHeaderId"
     
+    //MARK:- Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
     }
     
+    //MARK:- Methods
     fileprivate func setupCollectionView() {
         collectionView.backgroundColor = .white
         
@@ -29,6 +32,7 @@ class AppsHeaderController: UICollectionViewController {
 }
 
 
+//MARK:- CollectionView Methods
 extension AppsHeaderController: UICollectionViewDelegateFlowLayout {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

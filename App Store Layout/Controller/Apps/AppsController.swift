@@ -10,14 +10,21 @@ import UIKit
 
 class AppsController: UIViewController {
     
+    //MARK:- Cell Identifiers
     private static let appCellId = "appCellId"
     private static let headerId = "headerId"
     
+    //MARK:- Variables
+    var editorChoiceAppGroup: AppGroup?
+    
+    //MARK:- Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
+        fetchData()
     }
     
+    //MARK:- Layout Properties
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -29,6 +36,7 @@ class AppsController: UIViewController {
         return collectionView
     }()
     
+    //MARK:- Methods
     func setupCollectionView() {
         view.backgroundColor = .white
         
@@ -41,9 +49,24 @@ class AppsController: UIViewController {
         collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
+    
+    func fetchData() {
+        APIService.shared.fetchGames { [weak self] (appGroup, err) in
+            if let error = err {
+                print("Failed to fetch Games:", error)
+            }
+            guard let appGroup = appGroup else {return}
+            self?.editorChoiceAppGroup = appGroup
+            
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
+    }
 }
 
 
+//MARK:-  CollectionView Delegate Methods
 extension AppsController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -52,7 +75,8 @@ extension AppsController: UICollectionViewDelegate, UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppsController.appCellId, for: indexPath) as! AppGroupsCell
-        
+        cell.titleLabel.text = self.editorChoiceAppGroup?.feed.title
+        cell.horizontalCollectionView.appGroup = editorChoiceAppGroup
         return cell
     }
     

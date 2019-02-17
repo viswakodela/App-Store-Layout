@@ -10,13 +10,16 @@ import UIKit
 
 class AppsPageHeader: UICollectionReusableView {
     
+    //MARK:- Constants
     let appsHeaderController = AppsHeaderController(collectionViewLayout: UICollectionViewFlowLayout())
     
+    //MARK:- Cell Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
     }
     
+    //MARK:- Methods
     fileprivate func setupLayout() {
         
         guard let headerView = appsHeaderController.view else {return}
