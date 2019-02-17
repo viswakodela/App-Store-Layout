@@ -13,7 +13,7 @@ class SearchViewController: UIViewController {
     //MARK: - Cell Identifiers
     private static let searchCellID = "SearchCellID"
     
-    var appResults: [Result]?
+    var appResults = [Result]()
     var timer: Timer?
     
     //MARK: - Life cycle
@@ -31,15 +31,10 @@ class SearchViewController: UIViewController {
         collectionView.alwaysBounceVertical = true
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.prefetchDataSource = self
         return collectionView
     }()
     
-    lazy var searchController: UISearchController = {
-        let sc = UISearchController(searchResultsController: nil)
-        sc.searchBar.delegate = self
-        return sc
-    }()
+    let searchController: UISearchController = UISearchController(searchResultsController: nil)
     
     let activityIndicator: UIActivityIndicatorView = {
         let activity = UIActivityIndicatorView(style: .white)
@@ -63,6 +58,7 @@ class SearchViewController: UIViewController {
     func setupCollectionView() {
         collectionView.register(SearchResultsCell.self, forCellWithReuseIdentifier: SearchViewController.searchCellID)
         collectionView.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 239/255, alpha: 1)
+        collectionView.keyboardDismissMode = .interactive
         
         view.addSubview(collectionView)
         collectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -73,7 +69,7 @@ class SearchViewController: UIViewController {
         view.addSubview(activityIndicator)
         activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
+
         collectionView.addSubview(enterSearchTermLabel)
         enterSearchTermLabel.topAnchor.constraint(equalTo: collectionView.topAnchor, constant: 100).isActive = true
         enterSearchTermLabel.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor, constant: 50).isActive = true
@@ -82,8 +78,11 @@ class SearchViewController: UIViewController {
     }
     
     func setupSearchBar() {
+        definesPresentationContext = true
         navigationItem.searchController = self.searchController
-        navigationItem.searchController?.dimsBackgroundDuringPresentation = false
+//        navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
     }
 }
 
@@ -91,10 +90,11 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let apps = appResults else {return 0}
-        self.activityIndicator.alpha = apps.count != 0 ? 0 : 1
-        self.enterSearchTermLabel.isHidden = apps.count != 0 ? true : false
-        return apps.count
+        
+//        self.activityIndicator.isHidden = appResults.count != 0
+        self.activityIndicator.alpha = appResults.count != 0 ? 0 : 1
+        self.enterSearchTermLabel.isHidden = appResults.count != 0
+        return appResults.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -103,7 +103,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchViewController.searchCellID, for: indexPath) as! SearchResultsCell
-        let appResult = self.appResults?[indexPath.item]
+        let appResult = self.appResults[indexPath.item]
         cell.appResult = appResult
         return cell
     }
@@ -113,30 +113,24 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
 }
 
+//MARK: - SearchBar Delegate
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
         activityIndicator.startAnimating()
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
-            self.activityIndicator.stopAnimating()
-            DispatchQueue.global(qos: .background).async {
-                APIService.shared.fetchApps(searchTerm: searchText) { (results, err) in
-                    if let error = err {
-                        print(error.localizedDescription)
-                    }
-                    self.appResults = results
-                    DispatchQueue.main.async {
-                        self.collectionView.reloadData()
-                    }
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: {[weak self] (_) in
+            self?.activityIndicator.stopAnimating()
+            APIService.shared.fetchApps(searchTerm: searchText) { (results, err) in
+                if let error = err {
+                    print(error.localizedDescription)
+                }
+                self?.appResults = results
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
                 }
             }
         })
-    }
-}
-
-extension SearchViewController: UICollectionViewDataSourcePrefetching {
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        print(indexPaths.count)
     }
 }

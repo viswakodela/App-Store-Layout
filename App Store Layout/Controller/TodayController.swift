@@ -14,6 +14,4 @@ import UIKit
         super.viewDidLoad()
         collectionView.backgroundColor = .white
     }
-    
-    
  }

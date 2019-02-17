@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		968868F1269BA3F605C7CA6C /* Pods_App_Store_Layout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 975740A4242C06B9AA7C0515 /* Pods_App_Store_Layout.framework */; };
 		BD3768652213DA1300E5777D /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3768642213DA1300E5777D /* APIService.swift */; };
+		BD3D5086221903AC00323DD3 /* AppControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3D5085221903AC00323DD3 /* AppControllerCell.swift */; };
+		BD3D508D2219061D00323DD3 /* HorizontalCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3D508C2219061D00323DD3 /* HorizontalCollectionView.swift */; };
 		BDD2BA0422122398008EFCBF /* SearchResultsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD2BA0322122398008EFCBF /* SearchResultsCell.swift */; };
 		BDD2BA082212901D008EFCBF /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD2BA072212901D008EFCBF /* SearchResult.swift */; };
 		BDFD07AB220F3D2900EEC87D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFD07AA220F3D2900EEC87D /* AppDelegate.swift */; };
@@ -25,6 +27,8 @@
 		27C3CFD6390E08191148665F /* Pods-App Store Layout.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App Store Layout.debug.xcconfig"; path = "Pods/Target Support Files/Pods-App Store Layout/Pods-App Store Layout.debug.xcconfig"; sourceTree = "<group>"; };
 		975740A4242C06B9AA7C0515 /* Pods_App_Store_Layout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Store_Layout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD3768642213DA1300E5777D /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		BD3D5085221903AC00323DD3 /* AppControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppControllerCell.swift; sourceTree = "<group>"; };
+		BD3D508C2219061D00323DD3 /* HorizontalCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalCollectionView.swift; sourceTree = "<group>"; };
 		BDD2BA0322122398008EFCBF /* SearchResultsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsCell.swift; sourceTree = "<group>"; };
 		BDD2BA072212901D008EFCBF /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		BDFD07A7220F3D2900EEC87D /* App Store Layout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "App Store Layout.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,9 +73,27 @@
 			path = "Network Layer";
 			sourceTree = "<group>";
 		};
+		BD3D5089221905B600323DD3 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				BDFD07BE220F410300EEC87D /* SearchViewController.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		BD3D508A221905C200323DD3 /* Apps */ = {
+			isa = PBXGroup;
+			children = (
+				BDFD07C2220F45F200EEC87D /* AppsController.swift */,
+				BD3D508C2219061D00323DD3 /* HorizontalCollectionView.swift */,
+			);
+			path = Apps;
+			sourceTree = "<group>";
+		};
 		BDD2BA052212239C008EFCBF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				BD3D5085221903AC00323DD3 /* AppControllerCell.swift */,
 				BDD2BA0322122398008EFCBF /* SearchResultsCell.swift */,
 			);
 			path = View;
@@ -122,10 +144,10 @@
 		BDFD07C4220F477100EEC87D /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				BD3D508A221905C200323DD3 /* Apps */,
+				BD3D5089221905B600323DD3 /* Search */,
 				BDFD07BC220F3EC300EEC87D /* MainTabBarControllerViewController.swift */,
 				BDFD07C0220F42E200EEC87D /* TodayController.swift */,
-				BDFD07C2220F45F200EEC87D /* AppsController.swift */,
-				BDFD07BE220F410300EEC87D /* SearchViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -256,7 +278,9 @@
 				BDFD07BF220F410300EEC87D /* SearchViewController.swift in Sources */,
 				BDFD07BD220F3EC300EEC87D /* MainTabBarControllerViewController.swift in Sources */,
 				BDFD07C1220F42E200EEC87D /* TodayController.swift in Sources */,
+				BD3D508D2219061D00323DD3 /* HorizontalCollectionView.swift in Sources */,
 				BD3768652213DA1300E5777D /* APIService.swift in Sources */,
+				BD3D5086221903AC00323DD3 /* AppControllerCell.swift in Sources */,
 				BDFD07C3220F45F200EEC87D /* AppsController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

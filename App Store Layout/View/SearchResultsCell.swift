@@ -23,6 +23,7 @@ class SearchResultsCell: UICollectionViewCell {
             self.appIconImageView.sd_setImage(with: url)
             self.nameLabel.text = appResult.trackName
             self.categoryLabel.text = appResult.primaryGenreName
+            self.ratingLabel.text = "Rating: \(appResult.averageUserRating ?? 0)"
             
             guard let screenShotUrls = appResult.screenshotUrls else {return}
             if let url = URL(string: screenShotUrls[0]) {
@@ -100,7 +101,7 @@ class SearchResultsCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .clear
         imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 5
         imageView.layer.borderWidth = 0.5
         imageView.layer.borderColor = UIColor(white: 0.5, alpha: 0.5).cgColor

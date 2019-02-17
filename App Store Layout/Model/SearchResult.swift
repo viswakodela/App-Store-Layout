@@ -18,4 +18,5 @@ struct Result: Codable {
     let primaryGenreName: String
     let artworkUrl100: String
     var screenshotUrls: [String]?
+    var averageUserRating: Float?
 }
