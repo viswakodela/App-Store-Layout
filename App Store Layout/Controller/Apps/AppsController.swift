@@ -11,6 +11,7 @@ import UIKit
 class AppsController: UIViewController {
     
     private static let appCellId = "appCellId"
+    private static let headerId = "headerId"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +32,8 @@ class AppsController: UIViewController {
     func setupCollectionView() {
         view.backgroundColor = .white
         
-        collectionView.register(AppControllerCell.self, forCellWithReuseIdentifier: AppsController.appCellId)
+        collectionView.register(AppGroupsCell.self, forCellWithReuseIdentifier: AppsController.appCellId)
+        collectionView.register(AppsPageHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: AppsController.headerId)
         
         view.addSubview(collectionView)
         collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -49,7 +51,7 @@ extension AppsController: UICollectionViewDelegate, UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppsController.appCellId, for: indexPath) as! AppControllerCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppsController.appCellId, for: indexPath) as! AppGroupsCell
         
         return cell
     }
@@ -57,4 +59,19 @@ extension AppsController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 300)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+    }
+    
+    //Header Methods
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: AppsController.headerId, for: indexPath) as! AppsPageHeader
+        return headerCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.width, height: 300)
+    }
+    
 }
