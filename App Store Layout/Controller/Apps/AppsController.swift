@@ -16,6 +16,7 @@ class AppsController: UIViewController {
     
     //MARK:- Variables
     var editorChoiceAppGroup: AppGroup?
+    var groups = [AppGroup]()
     
     //MARK:- Lifecycle
     override func viewDidLoad() {
@@ -51,16 +52,48 @@ class AppsController: UIViewController {
     }
     
     func fetchData() {
-        APIService.shared.fetchGames { [weak self] (appGroup, err) in
+        
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
+        APIService.shared.fetchApps(urlString: "https://rss.itunes.apple.com/api/v1/us/ios-apps/top-grossing/all/25/explicit.json") { [weak self] (appGroup, err) in
+            dispatchGroup.leave()
+            print("Done with Top Grossing app")
             if let error = err {
                 print("Failed to fetch Games:", error)
             }
             guard let appGroup = appGroup else {return}
             self?.editorChoiceAppGroup = appGroup
-            
-            DispatchQueue.main.async {
-                self?.collectionView.reloadData()
+            self?.groups.append(appGroup)
+        }
+        
+        dispatchGroup.enter()
+        APIService.shared.fetchApps(urlString: "https://rss.itunes.apple.com/api/v1/us/ios-apps/top-free/all/25/explicit.json") { [weak self] (appGroup, err) in
+            dispatchGroup.leave()
+            print("Done with Top Free apps")
+            if let error = err {
+                print("Failed fetching Top Free Apps", error)
             }
+            
+            guard let topFreeAppsGroup = appGroup else {return}
+            self?.groups.append(topFreeAppsGroup)
+        }
+        
+        dispatchGroup.enter()
+        APIService.shared.fetchApps(urlString: "https://rss.itunes.apple.com/api/v1/us/ios-apps/new-games-we-love/all/25/explicit.json") { [weak self] (appGroup, err) in
+            dispatchGroup.leave()
+            print("Done with new games we love")
+            if let error = err {
+                print("Failed fetching Top Free Apps", error)
+            }
+            
+            guard let newGamesWeLove = appGroup else {return}
+            self?.groups.append(newGamesWeLove)
+        }
+        
+        
+        dispatchGroup.notify(queue: .main) { 
+            self.collectionView.reloadData()
         }
     }
 }
@@ -70,13 +103,16 @@ class AppsController: UIViewController {
 extension AppsController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return self.groups.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppsController.appCellId, for: indexPath) as! AppGroupsCell
-        cell.titleLabel.text = self.editorChoiceAppGroup?.feed.title
-        cell.horizontalCollectionView.appGroup = editorChoiceAppGroup
+//        cell.titleLabel.text = self.editorChoiceAppGroup?.feed.title
+//        cell.horizontalCollectionView.appGroup = editorChoiceAppGroup
+        let appgroup = self.groups[indexPath.item]
+        cell.titleLabel.text = appgroup.feed.title
+        cell.horizontalCollectionView.appGroup = appgroup
         return cell
     }
     
@@ -95,7 +131,7 @@ extension AppsController: UICollectionViewDelegate, UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 300)
+        return CGSize(width: view.frame.width, height: 0)
     }
     
 }

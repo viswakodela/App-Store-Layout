@@ -17,7 +17,6 @@ class APIService {
     func fetchApps(searchTerm: String, completion: @escaping ([Result], Error?) -> ()) {
         
         let urlString = "https://itunes.apple.com/search?term=\(searchTerm)&entity=software"
-        
         guard let url = URL(string: urlString) else {return}
         
         URLSession.shared.dataTask(with: url) { (data, response, err) in
@@ -34,11 +33,12 @@ class APIService {
             } catch {
                 completion([], error)
             }
-            }.resume()
+        }.resume()
     }
     
-    func fetchGames(completion: @escaping (AppGroup?, Error?) -> ()) {
-        guard let url = URL(string:"https://rss.itunes.apple.com/api/v1/us/ios-apps/top-grossing/all/10/explicit.json") else {return}
+    func fetchApps(urlString: String, completion: @escaping (AppGroup?, Error?) -> ()) {
+        
+        guard let url = URL(string: urlString) else {return}
         
         URLSession.shared.dataTask(with: url) { (data, response, err) in
             if let error = err {
@@ -49,11 +49,7 @@ class APIService {
             guard let data = data else {return}
             let appGroup = try? JSONDecoder().decode(AppGroup.self, from: data)
             completion(appGroup, nil)
-            
-            
         }.resume()
-        
     }
-    
     
 }
