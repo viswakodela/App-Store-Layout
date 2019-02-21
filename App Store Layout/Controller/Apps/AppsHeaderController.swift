@@ -13,6 +13,9 @@ class AppsHeaderController: UICollectionViewController {
     //MARK:- Cell IDentifiers
     private static let horizontalHeaderId = "horizontalHeaderId"
     
+    //MARK:- Variables
+    var headerApps = [HeaderModel]()
+    
     //MARK:- Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,11 +39,13 @@ class AppsHeaderController: UICollectionViewController {
 extension AppsHeaderController: UICollectionViewDelegateFlowLayout {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return headerApps.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppsHeaderController.horizontalHeaderId, for: indexPath) as! AppsHeaderCell
+        let header = self.headerApps[indexPath.item]
+        cell.headerModel = header
         return cell
     }
     

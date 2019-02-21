@@ -15,6 +15,16 @@ class AppsHeaderCell: UICollectionViewCell {
         setupLayout()
     }
     
+    var headerModel: HeaderModel! {
+        didSet {
+            self.companyLabel.text = headerModel.name
+             let imageUrl = headerModel.imageUrl
+            guard let url = URL(string: imageUrl) else {return}
+            self.imageView.sd_setImage(with: url)
+            self.titleLable.text = headerModel.tagline
+        }
+    }
+    
     //MARK:- Layout Properties
     let companyLabel: UILabel = {
         let label = UILabel()
@@ -39,8 +49,8 @@ class AppsHeaderCell: UICollectionViewCell {
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.backgroundColor = .red
         iv.layer.cornerRadius = 12
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.backgroundColor = .green
         return iv
     }()
     

@@ -92,7 +92,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
 //        self.activityIndicator.isHidden = appResults.count != 0
-        self.activityIndicator.alpha = appResults.count != 0 ? 0 : 1
+//        self.activityIndicator.alpha = appResults.count != 0 ? 0 : 1
         self.enterSearchTermLabel.isHidden = appResults.count != 0
         return appResults.count
     }
@@ -126,7 +126,8 @@ extension SearchViewController: UISearchBarDelegate {
                 if let error = err {
                     print(error.localizedDescription)
                 }
-                self?.appResults = results
+                guard let result = results else {return}
+                self?.appResults = result.results
                 DispatchQueue.main.async {
                     self?.collectionView.reloadData()
                 }

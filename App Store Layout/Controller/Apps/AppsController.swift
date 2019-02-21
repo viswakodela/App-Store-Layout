@@ -16,6 +16,7 @@ class AppsController: UIViewController {
     
     //MARK:- Variables
     var editorChoiceAppGroup: AppGroup?
+    var headerData = [HeaderModel]()
     var groups = [AppGroup]()
     
     //MARK:- Lifecycle
@@ -91,6 +92,17 @@ class AppsController: UIViewController {
             self?.groups.append(newGamesWeLove)
         }
         
+        dispatchGroup.enter()
+        APIService.shared.fetchSocialAppsForHeader(urlString: "https://api.letsbuildthatapp.com/appstore/social") { (results, err) in
+            dispatchGroup.leave()
+            if let error = err {
+                print(error.localizedDescription)
+                return
+            }
+            guard let results = results else {return}
+            self.headerData = results
+        
+        }
         
         dispatchGroup.notify(queue: .main) { 
             self.collectionView.reloadData()
@@ -108,8 +120,6 @@ extension AppsController: UICollectionViewDelegate, UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppsController.appCellId, for: indexPath) as! AppGroupsCell
-//        cell.titleLabel.text = self.editorChoiceAppGroup?.feed.title
-//        cell.horizontalCollectionView.appGroup = editorChoiceAppGroup
         let appgroup = self.groups[indexPath.item]
         cell.titleLabel.text = appgroup.feed.title
         cell.horizontalCollectionView.appGroup = appgroup
@@ -127,11 +137,13 @@ extension AppsController: UICollectionViewDelegate, UICollectionViewDataSource, 
     //Header Methods
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: AppsController.headerId, for: indexPath) as! AppsPageHeader
+        headerCell.appsHeaderController.headerApps = self.headerData
+        headerCell.appsHeaderController.collectionView.reloadData()
         return headerCell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 0)
+        return CGSize(width: view.frame.width, height: 300)
     }
     
 }
