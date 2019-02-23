@@ -14,7 +14,7 @@ class AppGroupsCell: UICollectionViewCell {
         setupLayout()
     }
     
-    let horizontalCollectionView = HorizontalCollectionView(collectionViewLayout: UICollectionViewFlowLayout())
+    let horizontalCollectionView = HorizontalCollectionView()
     
     //MARK:- Layout Properties
     let titleLabel: UILabel = {

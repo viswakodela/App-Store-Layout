@@ -15,7 +15,6 @@ class AppsController: UIViewController {
     private static let headerId = "headerId"
     
     //MARK:- Variables
-    var editorChoiceAppGroup: AppGroup?
     var headerData = [HeaderModel]()
     var groups = [AppGroup]()
     
@@ -64,7 +63,6 @@ class AppsController: UIViewController {
                 print("Failed to fetch Games:", error)
             }
             guard let appGroup = appGroup else {return}
-            self?.editorChoiceAppGroup = appGroup
             self?.groups.append(appGroup)
         }
         
@@ -101,7 +99,6 @@ class AppsController: UIViewController {
             }
             guard let results = results else {return}
             self.headerData = results
-        
         }
         
         dispatchGroup.notify(queue: .main) { 

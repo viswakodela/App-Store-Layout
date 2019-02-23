@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AppsHeaderController: UICollectionViewController {
+class AppsHeaderController: BaseCollectionViewController {
     
     //MARK:- Cell IDentifiers
     private static let horizontalHeaderId = "horizontalHeaderId"
@@ -25,11 +25,6 @@ class AppsHeaderController: UICollectionViewController {
     //MARK:- Methods
     fileprivate func setupCollectionView() {
         collectionView.backgroundColor = .white
-        
-        if let layout = collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.scrollDirection = .horizontal
-        }
-        
         collectionView.register(AppsHeaderCell.self, forCellWithReuseIdentifier: AppsHeaderController.horizontalHeaderId)
     }
 }
@@ -50,7 +45,7 @@ extension AppsHeaderController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 10)
+        return UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

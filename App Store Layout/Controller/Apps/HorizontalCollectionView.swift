@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HorizontalCollectionView: UICollectionViewController {
+class HorizontalCollectionView: BaseCollectionViewController {
     
     //MARK: - Variables and Constants
     private static let horizontalCellId = "horizontalCellId"
@@ -31,11 +31,6 @@ class HorizontalCollectionView: UICollectionViewController {
     //MARK:- Methods
     func setupLayout() {
         collectionView.backgroundColor = .white
-        
-        if let layout = collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.scrollDirection = .horizontal
-        }
-        
         collectionView.register(AppsRowCell.self, forCellWithReuseIdentifier: HorizontalCollectionView.horizontalCellId)
     }
 }

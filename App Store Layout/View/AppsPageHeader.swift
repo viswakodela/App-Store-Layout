@@ -11,7 +11,7 @@ import UIKit
 class AppsPageHeader: UICollectionReusableView {
     
     //MARK:- Constants
-    let appsHeaderController = AppsHeaderController(collectionViewLayout: UICollectionViewFlowLayout())
+    let appsHeaderController = AppsHeaderController()
     
     //MARK:- Cell Initialization
     override init(frame: CGRect) {
