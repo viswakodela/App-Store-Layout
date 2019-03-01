@@ -80,7 +80,6 @@ class SearchViewController: UIViewController {
     func setupSearchBar() {
         definesPresentationContext = true
         navigationItem.searchController = self.searchController
-//        navigationItem.hidesSearchBarWhenScrolling = false
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
     }
@@ -91,8 +90,6 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-//        self.activityIndicator.isHidden = appResults.count != 0
-//        self.activityIndicator.alpha = appResults.count != 0 ? 0 : 1
         self.enterSearchTermLabel.isHidden = appResults.count != 0
         return appResults.count
     }

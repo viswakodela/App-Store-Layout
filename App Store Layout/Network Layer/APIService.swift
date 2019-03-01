@@ -42,5 +42,4 @@ class APIService {
             completion(results, nil)
         }.resume()
     }
-    
 }

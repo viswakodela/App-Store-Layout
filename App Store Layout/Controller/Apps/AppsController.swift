@@ -120,7 +120,20 @@ extension AppsController: UICollectionViewDelegate, UICollectionViewDataSource, 
         let appgroup = self.groups[indexPath.item]
         cell.titleLabel.text = appgroup.feed.title
         cell.horizontalCollectionView.appGroup = appgroup
+        cell.horizontalCollectionView.didSelectHandler = { [weak self] feedResult in
+            let controller = AppDetailsController(collectionViewLayout: UICollectionViewFlowLayout())
+            controller.navigationItem.title = feedResult.name
+            controller.appId = feedResult.id
+            self?.navigationController?.pushViewController(controller, animated: true)
+        }
         return cell
+    }
+    
+    func didSelectHandler(feedResult: FeedResult) {
+        let controller = UIViewController()
+        controller.view.backgroundColor = .yellow
+        controller.navigationItem.title = feedResult.name
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

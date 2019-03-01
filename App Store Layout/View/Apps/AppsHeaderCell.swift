@@ -29,7 +29,6 @@ class AppsHeaderCell: UICollectionViewCell {
     let companyLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Facebook"
         label.textColor = .blue
         label.font = UIFont.boldSystemFont(ofSize: 13)
         return label
@@ -38,7 +37,6 @@ class AppsHeaderCell: UICollectionViewCell {
     let titleLable: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Facebook is one of the Social Media Application"
         label.font = UIFont.systemFont(ofSize: 24)
         label.numberOfLines = 0
         return label

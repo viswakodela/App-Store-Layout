@@ -19,4 +19,7 @@ struct Result: Codable {
     let artworkUrl100: String
     var screenshotUrls: [String]?
     var averageUserRating: Float?
+    let formattedPrice: String
+    let description: String
+    let releaseNotes: String
 }
