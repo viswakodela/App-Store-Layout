@@ -129,13 +129,6 @@ extension AppsController: UICollectionViewDelegate, UICollectionViewDataSource, 
         return cell
     }
     
-    func didSelectHandler(feedResult: FeedResult) {
-        let controller = UIViewController()
-        controller.view.backgroundColor = .yellow
-        controller.navigationItem.title = feedResult.name
-        self.navigationController?.pushViewController(controller, animated: true)
-    }
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 300)
     }
