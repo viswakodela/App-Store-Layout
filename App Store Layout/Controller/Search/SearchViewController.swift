@@ -108,6 +108,12 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 300)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let appId = String(appResults[indexPath.item].trackId)
+        let appDetailController = AppDetailsController(appId: appId)
+        navigationController?.pushViewController(appDetailController, animated: true)
+    }
 }
 
 //MARK: - SearchBar Delegate
@@ -121,7 +127,8 @@ extension SearchViewController: UISearchBarDelegate {
             self?.activityIndicator.stopAnimating()
             APIService.shared.fetchApps(searchTerm: searchText) { (results, err) in
                 if let error = err {
-                    print(error.localizedDescription)
+                    print("Failed to fetch Error", error.localizedDescription)
+                    return
                 }
                 guard let result = results else {return}
                 self?.appResults = result.results

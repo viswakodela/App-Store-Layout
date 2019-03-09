@@ -14,36 +14,53 @@ class AppDetailsController: UICollectionViewController {
     private static let previewCellId = "previewCellId"
     private static let reviewsRowCellID = "reviewsRowCellID"
     
-    var appId: String? {
-        didSet {
-            
-            let urlSting = "https://itunes.apple.com/lookup?id=\(appId ?? "")"
-            APIService.shared.fetchGenericJSONFetch(urlString: urlSting) { [weak self] (result: SearchResults?, err) in
-                self?.app = result?.results.first
-            }
-            
-            let reviewsUrl = "https://itunes.apple.com/rss/customerreviews/page=1/id=\(appId ?? "")/sortby=mostrecent/json?l=en&cc=us"
-            APIService.shared.fetchGenericJSONFetch(urlString: reviewsUrl) { [weak self] (reviews: Reviews?, err) in
-                if let error = err {
-                    print(error.localizedDescription)
-                    return
-                }
-                
-                self?.reviews = reviews
-                
-                DispatchQueue.main.async {
-                    self?.collectionView.reloadData()
-                }
-            }
-        }
-    }
+//    var appId: String? {
+//        didSet {
+//            print(appId ?? "")
+//
+//        }
+//    }
     
     var app: Result?
     var reviews: Reviews?
+    fileprivate var appId: String?
+    
+    //Dependency Injection
+    init(appId: String) {
+        let layout = UICollectionViewFlowLayout()
+        self.appId = appId
+        super.init(collectionViewLayout: layout)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutSetup()
+        fetchData()
+    }
+    
+    func fetchData() {
+        let urlSting = "https://itunes.apple.com/lookup?id=\(appId ?? "")"
+        APIService.shared.fetchGenericJSONFetch(urlString: urlSting) { [weak self] (result: SearchResults?, err) in
+            self?.app = result?.results.first
+        }
+        
+        let reviewsUrl = "https://itunes.apple.com/rss/customerreviews/page=1/id=\(appId ?? "")/sortby=mostrecent/json?l=en&cc=us"
+        APIService.shared.fetchGenericJSONFetch(urlString: reviewsUrl) { [weak self] (reviews: Reviews?, err) in
+            if let error = err {
+                print(error.localizedDescription)
+                return
+            }
+            
+            self?.reviews = reviews
+            
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
     }
     
     func layoutSetup() {

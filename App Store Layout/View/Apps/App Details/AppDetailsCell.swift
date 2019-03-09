@@ -39,7 +39,6 @@ class AppDetailsCell: UICollectionViewCell {
     let whatsNewlabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "What's New"
         label.font = UIFont.boldSystemFont(ofSize: 20)
         return label
     }()
@@ -47,7 +46,6 @@ class AppDetailsCell: UICollectionViewCell {
     let releaseNotesLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Release Notes"
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 16)
         return label
@@ -56,7 +54,6 @@ class AppDetailsCell: UICollectionViewCell {
     let appNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Thumper"
         label.font = UIFont.boldSystemFont(ofSize: 22)
         label.numberOfLines = 0
         return label
@@ -66,7 +63,6 @@ class AppDetailsCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = #colorLiteral(red: 0.1113199368, green: 0.4955177307, blue: 0.9525238872, alpha: 1)
-        button.setTitle("$3.4", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.layer.cornerRadius = 16

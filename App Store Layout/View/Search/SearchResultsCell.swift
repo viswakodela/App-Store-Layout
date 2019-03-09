@@ -19,7 +19,7 @@ class SearchResultsCell: UICollectionViewCell {
     
     var appResult: Result! {
         didSet {
-            guard let url = URL(string: appResult.artworkUrl100) else {return}
+            guard let url = URL(string: appResult.artworkUrl100 ?? "") else {return}
             self.appIconImageView.sd_setImage(with: url)
             self.nameLabel.text = appResult.trackName
             self.categoryLabel.text = appResult.primaryGenreName

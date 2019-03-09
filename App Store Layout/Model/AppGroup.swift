@@ -13,18 +13,13 @@ struct AppGroup: Decodable {
 }
 
 struct Feed: Decodable {
-    
     let title: String
     let results: [FeedResult]
-    
 }
 
 struct FeedResult: Decodable {
-    
     let id: String
     let name: String
     let artistName: String
-    let artistUrl: String
-    let artworkUrl100: String
-    
+    var artworkUrl100: String?
 }

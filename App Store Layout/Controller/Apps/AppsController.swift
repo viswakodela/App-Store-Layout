@@ -121,9 +121,8 @@ extension AppsController: UICollectionViewDelegate, UICollectionViewDataSource, 
         cell.titleLabel.text = appgroup.feed.title
         cell.horizontalCollectionView.appGroup = appgroup
         cell.horizontalCollectionView.didSelectHandler = { [weak self] feedResult in
-            let controller = AppDetailsController(collectionViewLayout: UICollectionViewFlowLayout())
+            let controller = AppDetailsController(appId: feedResult.id)
             controller.navigationItem.title = feedResult.name
-            controller.appId = feedResult.id
             self?.navigationController?.pushViewController(controller, animated: true)
         }
         return cell
@@ -148,5 +147,4 @@ extension AppsController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 300)
     }
-    
 }
