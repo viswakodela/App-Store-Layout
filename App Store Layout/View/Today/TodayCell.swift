@@ -10,10 +10,35 @@ import UIKit
 
 class TodayCell: UICollectionViewCell {
     
+    var todayItem: TodayItem? {
+        didSet {
+            categoryLabel.text = todayItem?.category
+            titleLabel.text = todayItem?.title
+            imageView.image = todayItem?.image
+            descriptionLabel.text = todayItem?.description
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         layout()
     }
+    
+    let categoryLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "LIFE HACK"
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        return label
+    }()
+    
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Utilizing your time"
+        label.font = UIFont.boldSystemFont(ofSize: 26)
+        return label
+    }()
     
     let imageView: UIImageView = {
         let iv = UIImageView()
@@ -25,14 +50,39 @@ class TodayCell: UICollectionViewCell {
         return iv
     }()
     
+    let descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "All the tools and apps you need to intelligently organize your life the right way"
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.numberOfLines = 0
+        return label
+    }()
+    
     func layout() {
         backgroundColor = .white
         layer.cornerRadius = 16
-        addSubview(imageView)
-        imageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        imageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        imageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        imageView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        
+        let imageContainerView = UIView()
+        imageContainerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageContainerView.addSubview(imageView)
+        imageView.centerXAnchor.constraint(equalTo: imageContainerView.centerXAnchor).isActive = true
+        imageView.centerYAnchor.constraint(equalTo: imageContainerView.centerYAnchor).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 240).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 240).isActive = true
+        
+        let stackView = UIStackView(arrangedSubviews: [categoryLabel, titleLabel, imageContainerView, descriptionLabel])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        
+        addSubview(stackView)
+        stackView.topAnchor.constraint(equalTo: topAnchor, constant: 24).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24).isActive = true
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

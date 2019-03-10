@@ -14,9 +14,14 @@ class TodayDetailsController: UITableViewController {
     private static let todayDetailsHeaderCellID = "todayDetailsHeaderCellID"
     
     var dismissDetailsHandler: (() -> ())?
+    var todayItem: TodayItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableViewSetup()
+    }
+    
+    func tableViewSetup() {
         view.backgroundColor = .white
         tableView.tableFooterView = UIView()
         tableView.register(TodayDetailsCell.self, forCellReuseIdentifier: TodayDetailsController.todayDetailsCellID)
@@ -36,6 +41,10 @@ extension TodayDetailsController {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: TodayDetailsController.todayDetailsHeaderCellID, for: indexPath) as! TodayDetailsHeaderCell
             cell.closeButton.addTarget(self, action: #selector(handleDismissDetails), for: .touchUpInside)
+            cell.todayCell.imageView.image = self.todayItem?.image
+            cell.todayCell.categoryLabel.text = self.todayItem?.category
+            cell.todayCell.descriptionLabel.text = self.todayItem?.description
+            cell.todayCell.titleLabel.text = self.todayItem?.title
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: TodayDetailsController.todayDetailsCellID, for: indexPath) as! TodayDetailsCell
@@ -55,5 +64,4 @@ extension TodayDetailsController {
         button.isHidden = true
         self.dismissDetailsHandler?()
     }
-    
 }

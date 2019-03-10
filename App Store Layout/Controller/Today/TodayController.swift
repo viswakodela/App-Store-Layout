@@ -1,4 +1,4 @@
- //
+//
 //  TodayController.swift
 //  App Store Layout
 //
@@ -19,6 +19,9 @@ import UIKit
     var widthConstraint: NSLayoutConstraint?
     var heightConstraint: NSLayoutConstraint?
     
+    var todayItems = [TodayItem.init(title: "LIFE HACK", category: "Utilizing your Time", image: #imageLiteral(resourceName: "garden"), description: "All the tools and apps you need to intelligently organize your life the right way"),
+                      TodayItem.init(title: "HOLIDAYS", category: "Travel on Busget", image: #imageLiteral(resourceName: "holiday"), description: "Find out all you need to know on how to travel without packing everything")]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionViewSetup()
@@ -35,11 +38,13 @@ import UIKit
  extension TodayController: UICollectionViewDelegateFlowLayout {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
+        return todayItems.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayController.todayCellID, for: indexPath) as! TodayCell
+        let item = todayItems[indexPath.item]
+        cell.todayItem = item
         return cell
     }
     
@@ -61,6 +66,7 @@ import UIKit
         let cell = collectionView.cellForItem(at: indexPath) as! TodayCell
         
         self.todayDetailsController = TodayDetailsController()
+        self.todayDetailsController?.todayItem = self.todayItems[indexPath.item]
         
         todayDetailsController?.dismissDetailsHandler = {
             self.handleTodayDetailsViewClose()
@@ -68,13 +74,13 @@ import UIKit
         
         let todayDetailsView = todayDetailsController!.view!
         addChild(todayDetailsController!)
-        todayDetailsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTodayDetailsViewClose)))
+//        todayDetailsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTodayDetailsViewClose)))
         todayDetailsView.layer.cornerRadius = 16
         
         view.addSubview(todayDetailsView)
         guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else {return}
         self.startingFrame = startingFrame
-//        todayDetailsView.frame = startingFrame
+        
         todayDetailsView.translatesAutoresizingMaskIntoConstraints = false
         
         topConstraint = todayDetailsView.topAnchor.constraint(equalTo: view.topAnchor, constant: startingFrame.origin.y)
@@ -86,7 +92,6 @@ import UIKit
         self.view.layoutIfNeeded()
         
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.7, options: .curveEaseOut, animations: {
-//            todayDetailsView.frame = self.view.frame
             self.topConstraint?.constant = 0
             self.leadingConstraint?.constant = 0
             self.widthConstraint?.constant = self.view.frame.width

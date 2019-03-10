@@ -10,7 +10,7 @@ import UIKit
 
 class TodayDetailsHeaderCell: UITableViewCell {
     
-    var todayController: TodayDetailsController?
+    let todayCell = TodayCell()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -25,7 +25,6 @@ class TodayDetailsHeaderCell: UITableViewCell {
     }()
     
     func setLayout() {
-        let todayCell = TodayCell()
         addSubview(todayCell)
         todayCell.translatesAutoresizingMaskIntoConstraints = false
         
