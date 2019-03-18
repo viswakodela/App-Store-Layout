@@ -19,7 +19,7 @@ class AppsRowCell: UICollectionViewCell {
     var appResults: FeedResult? {
         didSet {
             guard let result = appResults else {return}
-            guard let url = URL(string: result.artworkUrl100) else {return}
+            guard let url = URL(string: result.artworkUrl100 ?? "") else {return}
             self.imageView.sd_setImage(with: url)
             self.appNameLabel.text = result.name
             self.categoryLabel.text = result.artistName

@@ -15,11 +15,20 @@ class AppsHeaderCell: UICollectionViewCell {
         setupLayout()
     }
     
+    var headerModel: HeaderModel! {
+        didSet {
+            self.companyLabel.text = headerModel.name
+             let imageUrl = headerModel.imageUrl
+            guard let url = URL(string: imageUrl) else {return}
+            self.imageView.sd_setImage(with: url)
+            self.titleLable.text = headerModel.tagline
+        }
+    }
+    
     //MARK:- Layout Properties
     let companyLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Facebook"
         label.textColor = .blue
         label.font = UIFont.boldSystemFont(ofSize: 13)
         return label
@@ -28,7 +37,6 @@ class AppsHeaderCell: UICollectionViewCell {
     let titleLable: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Facebook is one of the Social Media Application"
         label.font = UIFont.systemFont(ofSize: 24)
         label.numberOfLines = 0
         return label
@@ -39,8 +47,8 @@ class AppsHeaderCell: UICollectionViewCell {
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.backgroundColor = .red
         iv.layer.cornerRadius = 12
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.backgroundColor = .green
         return iv
     }()
     
