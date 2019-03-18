@@ -15,6 +15,8 @@ class TodayMultipleAppCell: BaseTodayCell {
             categoryLabel.text = todayItem?.category
             titleLabel.text = todayItem?.title
             backgroundColor = todayItem?.color
+            multipleAppController.feedResults = todayItem?.apps ?? []
+            multipleAppController.collectionView.reloadData()
         }
     }
     
@@ -22,6 +24,8 @@ class TodayMultipleAppCell: BaseTodayCell {
         super.init(frame: frame)
         setupLayout()
     }
+    
+    let multipleAppController = TodayMultipleAppsController(mode: .small)
     
     let categoryLabel: UILabel = {
         let label = UILabel()
@@ -43,8 +47,8 @@ class TodayMultipleAppCell: BaseTodayCell {
     func setupLayout() {
         
         layer.cornerRadius = 16
-        let multipleAppController = TodayMultipleAppsController()
         guard let multipleControllerView = multipleAppController.view else {return}
+        multipleControllerView.translatesAutoresizingMaskIntoConstraints = false
         
         let stackView = UIStackView(arrangedSubviews: [titleLabel, categoryLabel, multipleControllerView])
         stackView.translatesAutoresizingMaskIntoConstraints = false

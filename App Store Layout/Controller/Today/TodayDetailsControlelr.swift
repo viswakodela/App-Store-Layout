@@ -58,7 +58,7 @@ extension TodayDetailsController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return 500
+            return TodayController.cellHeight
         } else {
             return super.tableView(tableView, heightForRowAt: indexPath)
         }

@@ -64,6 +64,13 @@ class MultipleAppCell: UICollectionViewCell {
         return button
     }()
     
+    let seperatorView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
+        return view
+    }()
+ 
     //MARK:-  Methods
     func setupLayout() {
         
@@ -83,11 +90,16 @@ class MultipleAppCell: UICollectionViewCell {
         ovarAllStackView.alignment = .center
         
         addSubview(ovarAllStackView)
-        ovarAllStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
+        ovarAllStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
         ovarAllStackView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        ovarAllStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
-        ovarAllStackView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        ovarAllStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
+        ovarAllStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1).isActive = true
         
+        addSubview(seperatorView)
+        seperatorView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 8).isActive = true
+        seperatorView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 64).isActive = true
+        seperatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        seperatorView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

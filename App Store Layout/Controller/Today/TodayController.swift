@@ -21,14 +21,20 @@ import UIKit
     var widthConstraint: NSLayoutConstraint?
     var heightConstraint: NSLayoutConstraint?
     
-    var todayItems = [
-        TodayItem.init(title: "THE DAILY LIST", category: "Test Drive these Carplay Apps", image: #imageLiteral(resourceName: "garden"), description: "", color: .white, cellType: .multiple),
-        TodayItem.init(title: "LIFE HACK", category: "Utilizing your Time", image: #imageLiteral(resourceName: "garden"), description: "All the tools and apps you need to intelligently organize your life the right way", color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), cellType: .single),
-        TodayItem.init(title: "HOLIDAYS", category: "Travel on Busget", image: #imageLiteral(resourceName: "holiday"), description: "Find out all you need to know on how to travel without packing everything", color: #colorLiteral(red: 0.9828600287, green: 0.9638172984, blue: 0.7271144986, alpha: 1), cellType: .single)]
+    static let cellHeight: CGFloat = 450
+    
+//   var todayItems = [
+//        TodayItem.init(title: "THE DAILY LIST", category: "Test Drive these Carplay Apps", image: #imageLiteral(resourceName: "garden"), description: "", color: .white, cellType: .multiple),
+//        TodayItem.init(title: "LIFE HACK", category: "Utilizing your Time", image: #imageLiteral(resourceName: "garden"), description: "All the tools and apps you need to intelligently organize your life the right way", color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), cellType: .single),
+//        TodayItem.init(title: "HOLIDAYS", category: "Travel on Busget", image: #imageLiteral(resourceName: "holiday"), description: "Find out all you need to know on how to travel without packing everything", color: #colorLiteral(red: 0.9828600287, green: 0.9638172984, blue: 0.7271144986, alpha: 1), cellType: .single)]
+    
+    var todayItems = [TodayItem]()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionViewSetup()
+        fetchData()
     }
     
     func collectionViewSetup() {
@@ -38,6 +44,43 @@ import UIKit
         collectionView.register(TodayCell.self, forCellWithReuseIdentifier: TodayItem.CellType.single.rawValue)
         collectionView.register(TodayMultipleAppCell.self, forCellWithReuseIdentifier: TodayItem.CellType.multiple.rawValue)
     }
+    
+    func fetchData() {
+        
+        let dispatchGroup = DispatchGroup()
+        var topGrossingApps: AppGroup?
+        var topFreeGames: AppGroup?
+        
+        dispatchGroup.enter()
+        APIService.shared.fetchApps(urlString: "https://rss.itunes.apple.com/api/v1/us/ios-apps/top-grossing/all/25/explicit.json") { (appGroup, err) in
+            
+            guard let appGroup = appGroup else {return}
+            topGrossingApps = appGroup
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        APIService.shared.fetchApps(urlString: "https://rss.itunes.apple.com/api/v1/us/ios-apps/top-free/all/25/explicit.json") { (appGroup, err) in
+            if let error = err {
+                print("Failed fetching Top Free Apps", error)
+            }
+            
+            guard let topFreeAppsGroup = appGroup else {return}
+            topFreeGames = topFreeAppsGroup
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            self.todayItems = [
+                TodayItem.init(title: "THE DAILY LIST", category: topGrossingApps?.feed.title ?? "", image: #imageLiteral(resourceName: "garden"), description: "", color: .white, cellType: .multiple, apps: topGrossingApps?.feed.results ?? []),
+                TodayItem.init(title: "LIFE HACK", category: "Utilizing your Time", image: #imageLiteral(resourceName: "garden"), description: "All the tools and apps you need to intelligently organize your life the right way", color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), cellType: .single, apps: []),
+                TodayItem.init(title: "THE DAILY LIST", category: topFreeGames?.feed.title ?? "", image: #imageLiteral(resourceName: "garden"), description: "", color: .white, cellType: .multiple, apps: topFreeGames?.feed.results ?? []),
+                TodayItem.init(title: "HOLIDAYS", category: "Travel on Busget", image: #imageLiteral(resourceName: "holiday"), description: "Find out all you need to know on how to travel without packing everything", color: #colorLiteral(red: 0.9828600287, green: 0.9638172984, blue: 0.7271144986, alpha: 1), cellType: .single, apps: [])]
+            
+            self.collectionView.reloadData()
+        }
+    }
+    
  }
  
  extension TodayController: UICollectionViewDelegateFlowLayout {
@@ -58,7 +101,7 @@ import UIKit
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = view.frame.width - 64
-        return CGSize(width: width, height: 500)
+        return CGSize(width: width, height: TodayController.cellHeight)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -71,8 +114,17 @@ import UIKit
     
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as! TodayCell
         
+        let item = self.todayItems[indexPath.item]
+        
+        if item.cellType == .multiple {
+            let multipleAppsController = TodayMultipleAppsController(mode: .fullScreen)
+            multipleAppsController.feedResults = item.apps
+            present(multipleAppsController, animated: true)
+            return
+        }
+        
+        let cell = collectionView.cellForItem(at: indexPath)!
         self.todayDetailsController = TodayDetailsController()
         self.todayDetailsController?.todayItem = self.todayItems[indexPath.item]
         
