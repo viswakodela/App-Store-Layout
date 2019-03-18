@@ -11,6 +11,8 @@ import UIKit
  class TodayController: UICollectionViewController {
     
     private static let todayCellID = "todayCellID"
+    private static let todayMultipleAppCellID = "todayMultipleAppCellID"
+    
     var startingFrame: CGRect?
     var todayDetailsController: TodayDetailsController?
     
@@ -19,8 +21,10 @@ import UIKit
     var widthConstraint: NSLayoutConstraint?
     var heightConstraint: NSLayoutConstraint?
     
-    var todayItems = [TodayItem.init(title: "LIFE HACK", category: "Utilizing your Time", image: #imageLiteral(resourceName: "garden"), description: "All the tools and apps you need to intelligently organize your life the right way"),
-                      TodayItem.init(title: "HOLIDAYS", category: "Travel on Busget", image: #imageLiteral(resourceName: "holiday"), description: "Find out all you need to know on how to travel without packing everything")]
+    var todayItems = [
+        TodayItem.init(title: "THE DAILY LIST", category: "Test Drive these Carplay Apps", image: #imageLiteral(resourceName: "garden"), description: "", color: .white, cellType: .multiple),
+        TodayItem.init(title: "LIFE HACK", category: "Utilizing your Time", image: #imageLiteral(resourceName: "garden"), description: "All the tools and apps you need to intelligently organize your life the right way", color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), cellType: .single),
+        TodayItem.init(title: "HOLIDAYS", category: "Travel on Busget", image: #imageLiteral(resourceName: "holiday"), description: "Find out all you need to know on how to travel without packing everything", color: #colorLiteral(red: 0.9828600287, green: 0.9638172984, blue: 0.7271144986, alpha: 1), cellType: .single)]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +35,8 @@ import UIKit
         
         navigationController?.isNavigationBarHidden = true
         collectionView.backgroundColor = #colorLiteral(red: 0.8783513904, green: 0.8784809709, blue: 0.8783348203, alpha: 1)
-        collectionView.register(TodayCell.self, forCellWithReuseIdentifier: TodayController.todayCellID)
+        collectionView.register(TodayCell.self, forCellWithReuseIdentifier: TodayItem.CellType.single.rawValue)
+        collectionView.register(TodayMultipleAppCell.self, forCellWithReuseIdentifier: TodayItem.CellType.multiple.rawValue)
     }
  }
  
@@ -42,15 +47,18 @@ import UIKit
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayController.todayCellID, for: indexPath) as! TodayCell
-        let item = todayItems[indexPath.item]
-        cell.todayItem = item
+        
+        let cellId = self.todayItems[indexPath.item].cellType.rawValue
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! BaseTodayCell
+        let todayItem = todayItems[indexPath.item]
+        cell.todayItem = todayItem
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = view.frame.width - 64
-        return CGSize(width: width, height: 450)
+        return CGSize(width: width, height: 500)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -71,6 +79,9 @@ import UIKit
         todayDetailsController?.dismissDetailsHandler = {
             self.handleTodayDetailsViewClose()
         }
+        
+        let firstCell = todayDetailsController?.tableView.cellForRow(at: [0,0]) as? TodayDetailsHeaderCell
+        firstCell?.todayCell.topConstraint?.constant = 48
         
         let todayDetailsView = todayDetailsController!.view!
         addChild(todayDetailsController!)
@@ -101,10 +112,12 @@ import UIKit
             
             self.tabBarController?.tabBar.transform = CGAffineTransform(translationX: 0, y: 100)
         }, completion: nil)
-        
     }
     
     @objc func handleTodayDetailsViewClose() {
+        
+        let firstCell = todayDetailsController?.tableView.cellForRow(at: [0,0]) as? TodayDetailsHeaderCell
+        firstCell?.todayCell.topConstraint?.constant = 24
         
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.7, options: .curveEaseOut, animations: {
             

@@ -19,7 +19,6 @@ class TodayDetailsCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "There is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\nThere is Something to write here\n"
-        label.backgroundColor = .green
         label.numberOfLines = 0
         return label
     }()

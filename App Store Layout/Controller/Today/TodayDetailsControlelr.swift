@@ -25,8 +25,11 @@ class TodayDetailsController: UITableViewController {
         view.backgroundColor = .white
         tableView.tableFooterView = UIView()
         tableView.register(TodayDetailsCell.self, forCellReuseIdentifier: TodayDetailsController.todayDetailsCellID)
-        tableView.separatorStyle = .none
         tableView.register(TodayDetailsHeaderCell.self, forCellReuseIdentifier: TodayDetailsController.todayDetailsHeaderCellID)
+        tableView.separatorStyle = .none
+        tableView.contentInsetAdjustmentBehavior = .never
+        let bottomHeight = UIApplication.shared.statusBarFrame.height
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: bottomHeight)
     }
 }
 
@@ -45,6 +48,7 @@ extension TodayDetailsController {
             cell.todayCell.categoryLabel.text = self.todayItem?.category
             cell.todayCell.descriptionLabel.text = self.todayItem?.description
             cell.todayCell.titleLabel.text = self.todayItem?.title
+            cell.todayCell.backgroundColor = self.todayItem?.color
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: TodayDetailsController.todayDetailsCellID, for: indexPath) as! TodayDetailsCell
@@ -54,7 +58,7 @@ extension TodayDetailsController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return 450
+            return 500
         } else {
             return super.tableView(tableView, heightForRowAt: indexPath)
         }

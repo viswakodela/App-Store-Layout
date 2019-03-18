@@ -13,4 +13,13 @@ struct TodayItem {
     let category: String
     let image: UIImage
     let description: String
+    let color: UIColor
+    
+    let cellType: CellType
+    
+    enum CellType: String {
+        case single
+        case multiple
+    }
+    
 }

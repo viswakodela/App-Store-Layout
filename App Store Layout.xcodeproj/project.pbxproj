@@ -25,6 +25,10 @@
 		BD7C054E223359930054496D /* TodayDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7C054D223359930054496D /* TodayDetailsCell.swift */; };
 		BD7C055022345FA50054496D /* TodayDetailsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7C054F22345FA50054496D /* TodayDetailsHeaderCell.swift */; };
 		BD7C05522234B3CA0054496D /* TodayItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7C05512234B3CA0054496D /* TodayItem.swift */; };
+		BDB79452223EEC9B00B181D2 /* TodayMultipleAppCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB79451223EEC9B00B181D2 /* TodayMultipleAppCell.swift */; };
+		BDB79454223F023800B181D2 /* BaseTodayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB79453223F023800B181D2 /* BaseTodayCell.swift */; };
+		BDB79456223F039400B181D2 /* TodayMutlipleAppsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB79455223F039400B181D2 /* TodayMutlipleAppsController.swift */; };
+		BDB79458223F0B2800B181D2 /* MultipleAppCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB79457223F0B2800B181D2 /* MultipleAppCell.swift */; };
 		BDD2BA0422122398008EFCBF /* SearchResultsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD2BA0322122398008EFCBF /* SearchResultsCell.swift */; };
 		BDD2BA082212901D008EFCBF /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD2BA072212901D008EFCBF /* SearchResult.swift */; };
 		BDEFF117221BB94300482A29 /* HeaderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEFF116221BB94300482A29 /* HeaderModel.swift */; };
@@ -64,6 +68,10 @@
 		BD7C054D223359930054496D /* TodayDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayDetailsCell.swift; sourceTree = "<group>"; };
 		BD7C054F22345FA50054496D /* TodayDetailsHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayDetailsHeaderCell.swift; sourceTree = "<group>"; };
 		BD7C05512234B3CA0054496D /* TodayItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayItem.swift; sourceTree = "<group>"; };
+		BDB79451223EEC9B00B181D2 /* TodayMultipleAppCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMultipleAppCell.swift; sourceTree = "<group>"; };
+		BDB79453223F023800B181D2 /* BaseTodayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTodayCell.swift; sourceTree = "<group>"; };
+		BDB79455223F039400B181D2 /* TodayMutlipleAppsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMutlipleAppsController.swift; sourceTree = "<group>"; };
+		BDB79457223F0B2800B181D2 /* MultipleAppCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleAppCell.swift; sourceTree = "<group>"; };
 		BDD2BA0322122398008EFCBF /* SearchResultsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsCell.swift; sourceTree = "<group>"; };
 		BDD2BA072212901D008EFCBF /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		BDEFF116221BB94300482A29 /* HeaderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderModel.swift; sourceTree = "<group>"; };
@@ -137,9 +145,12 @@
 		BD7C0548223347090054496D /* Today */ = {
 			isa = PBXGroup;
 			children = (
+				BDB79453223F023800B181D2 /* BaseTodayCell.swift */,
 				BD7C0549223347180054496D /* TodayCell.swift */,
 				BD7C054D223359930054496D /* TodayDetailsCell.swift */,
 				BD7C054F22345FA50054496D /* TodayDetailsHeaderCell.swift */,
+				BDB79451223EEC9B00B181D2 /* TodayMultipleAppCell.swift */,
+				BDB79457223F0B2800B181D2 /* MultipleAppCell.swift */,
 			);
 			path = Today;
 			sourceTree = "<group>";
@@ -213,6 +224,7 @@
 			children = (
 				BDFD07C0220F42E200EEC87D /* TodayController.swift */,
 				BD7C054B223353510054496D /* TodayDetailsControlelr.swift */,
+				BDB79455223F039400B181D2 /* TodayMutlipleAppsController.swift */,
 			);
 			path = Today;
 			sourceTree = "<group>";
@@ -386,6 +398,7 @@
 				BD3D509122191DE500323DD3 /* AppsRowCell.swift in Sources */,
 				BDD2BA0422122398008EFCBF /* SearchResultsCell.swift in Sources */,
 				BDF164692229CF5900A99200 /* PreviewImageCell.swift in Sources */,
+				BDB79452223EEC9B00B181D2 /* TodayMultipleAppCell.swift in Sources */,
 				BDD2BA082212901D008EFCBF /* SearchResult.swift in Sources */,
 				BDFD07AB220F3D2900EEC87D /* AppDelegate.swift in Sources */,
 				BDFD07BF220F410300EEC87D /* SearchViewController.swift in Sources */,
@@ -395,11 +408,13 @@
 				BD7C055022345FA50054496D /* TodayDetailsHeaderCell.swift in Sources */,
 				BDF1645E222994D800A99200 /* AppDetailsController.swift in Sources */,
 				BDEFF117221BB94300482A29 /* HeaderModel.swift in Sources */,
+				BDB79458223F0B2800B181D2 /* MultipleAppCell.swift in Sources */,
 				BDFD07BD220F3EC300EEC87D /* MainTabBarControllerViewController.swift in Sources */,
 				BDFD07C1220F42E200EEC87D /* TodayController.swift in Sources */,
 				BD3D50972219C5C300323DD3 /* AppsHeaderCell.swift in Sources */,
 				BD3D508D2219061D00323DD3 /* HorizontalCollectionView.swift in Sources */,
 				BDF164672229CC6100A99200 /* PrviewHorizontalController.swift in Sources */,
+				BDB79454223F023800B181D2 /* BaseTodayCell.swift in Sources */,
 				BD3D50992219D75E00323DD3 /* AppGroup.swift in Sources */,
 				BD3768652213DA1300E5777D /* APIService.swift in Sources */,
 				BD3D509322192CCB00323DD3 /* AppsPageHeader.swift in Sources */,
@@ -410,6 +425,7 @@
 				BD7C054C223353510054496D /* TodayDetailsControlelr.swift in Sources */,
 				BD4717882232078300675EB2 /* Review.swift in Sources */,
 				BD471786222F846600675EB2 /* ReviewsCell.swift in Sources */,
+				BDB79456223F039400B181D2 /* TodayMutlipleAppsController.swift in Sources */,
 				BD471782222F7E0800675EB2 /* ReviewsRowCell.swift in Sources */,
 				BDF1645B221F173D00A99200 /* BaseCollectionViewController.swift in Sources */,
 				BDF1646022299CD400A99200 /* AppDetailsCell.swift in Sources */,

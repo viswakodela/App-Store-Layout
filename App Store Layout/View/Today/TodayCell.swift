@@ -8,16 +8,19 @@
 
 import UIKit
 
-class TodayCell: UICollectionViewCell {
+class TodayCell: BaseTodayCell {
     
-    var todayItem: TodayItem? {
+    override var todayItem: TodayItem? {
         didSet {
             categoryLabel.text = todayItem?.category
             titleLabel.text = todayItem?.title
             imageView.image = todayItem?.image
             descriptionLabel.text = todayItem?.description
+            backgroundColor = todayItem?.color
         }
     }
+    
+    var topConstraint: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,7 +31,7 @@ class TodayCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "LIFE HACK"
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.boldSystemFont(ofSize: 26)
         return label
     }()
     
@@ -36,7 +39,7 @@ class TodayCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Utilizing your time"
-        label.font = UIFont.boldSystemFont(ofSize: 26)
+        label.font = UIFont.boldSystemFont(ofSize: 20)
         return label
     }()
     
@@ -60,7 +63,6 @@ class TodayCell: UICollectionViewCell {
     }()
     
     func layout() {
-        backgroundColor = .white
         layer.cornerRadius = 16
         
         let imageContainerView = UIView()
@@ -72,21 +74,23 @@ class TodayCell: UICollectionViewCell {
         imageView.widthAnchor.constraint(equalToConstant: 240).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 240).isActive = true
         
-        let stackView = UIStackView(arrangedSubviews: [categoryLabel, titleLabel, imageContainerView, descriptionLabel])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, categoryLabel, imageContainerView, descriptionLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 8
         
         addSubview(stackView)
-        stackView.topAnchor.constraint(equalTo: topAnchor, constant: 24).isActive = true
+//        stackView.topAnchor.constraint(equalTo: topAnchor, constant: 24).isActive = true
         stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24).isActive = true
         stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24).isActive = true
         stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24).isActive = true
+        
+        self.topConstraint = stackView.topAnchor.constraint(equalTo: topAnchor, constant: 24)
+        self.topConstraint?.isActive = true
         
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }

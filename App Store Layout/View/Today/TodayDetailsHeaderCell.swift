@@ -36,7 +36,7 @@ class TodayDetailsHeaderCell: UITableViewCell {
         addSubview(closeButton)
         closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         closeButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
+        closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 40).isActive = true
         closeButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
